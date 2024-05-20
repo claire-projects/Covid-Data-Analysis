@@ -1,6 +1,6 @@
 /*
 
-Queries used for Tableau Project
+Queries used for buildint the Tableau dashboard
 
 */
 
@@ -45,6 +45,7 @@ From `covid-423717.CovidData.CovidDeaths`
 --Where location like '%states%'
 Group by Location, Population, date
 order by PercentPopulationInfected desc;
+
 
 
 
