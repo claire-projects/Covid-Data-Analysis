@@ -4,6 +4,6 @@ The granularity level of the dataset is per continent per country, within the ti
 
 This project consists of 2 main parts: the first part is exploring and understanding the Covid19 data via SQL (in the environment of Google BigQuery), and the second part is creating dashboard and visualizations in Tableau. 
 
-Related Links
-1. Tableau dashboard: https://public.tableau.com/app/profile/claire.portfolio/viz/CovidAnalysisDashboard_17162100243010/Dashboard1
+Related Links:
+1. My Tableau dashboard: https://public.tableau.com/app/profile/claire.portfolio/viz/CovidAnalysisDashboard_17162100243010/Dashboard1
 2. Covid19 dataset: https://ourworldindata.org/covid-deaths 
