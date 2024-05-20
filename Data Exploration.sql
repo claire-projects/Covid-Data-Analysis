@@ -1,29 +1,43 @@
+/*
+Covid Project - Data Exploration in SQL (Google BigQuery)
+
+Skills used: Joins, CTE's, Temp Tables, Windows Functions, Aggregate Functions, Creating Views, Converting Data Types
+
+*/
+
+
+
 SELECT *
 FROM `covid-423717.CovidData.CovidDeaths` 
 WHERE continent is not null
 ORDER BY 3,4;
 
 
--- SELECT *
--- FROM `covid-423717.CovidData.CovidVaccinations` 
--- ORDER BY 3,4
--- LIMIT 5
+SELECT *
+FROM `covid-423717.CovidData.CovidVaccinations` 
+ORDER BY 3,4
+LIMIT 5
 
---Select data that we're going to be using
+
+
+-- Select Data 
 
 SELECT location, date, total_cases, new_cases, total_deaths, population
 FROM `covid-423717.CovidData.CovidDeaths` 
 ORDER BY 1,2;
 
---Looking at Total case vs Total Deaths
--- shows the likelihood of dying
+-- Total Cases vs Total Deaths
+-- Shows likelihood of death if contract by countries
 
 SELECT location, date, total_cases, total_deaths, (total_deaths/total_cases)*100 AS DeathPercentage
 FROM `covid-423717.CovidData.CovidDeaths` 
 WHERE location LIKE '%States%'
 ORDER BY 1,2;
 
---Shows what percentage of population got covid (i.e. infection rate)
+
+
+-- Total Cases vs Population
+-- Shows what percentage of population infected with Covid
 
 SELECT location, total_cases, Population, (total_cases/population)*100 AS PercentPopulationInfected
 FROM `covid-423717.CovidData.CovidDeaths` 
@@ -31,7 +45,8 @@ FROM `covid-423717.CovidData.CovidDeaths`
 ORDER BY 1,2;
 
 
---Shows the countries that have the highest infection rate
+
+-- Countries with Highest Infection Rate compared to Population
 
 SELECT location, Population, MAX (total_cases) AS HighestInfectionCount, MAX(total_cases/population)*100 AS PercentPopulationInfected
 FROM `covid-423717.CovidData.CovidDeaths` 
@@ -39,7 +54,7 @@ GROUP BY location, Population
 ORDER BY 4 DESC;
 
 
--- Show the countries with the highest death count per population
+-- Countries with Highest Death Count per Population
 
 
 SELECT location, MAX (total_deaths) AS TotalDeathCount
@@ -48,9 +63,12 @@ WHERE continent is not null
 GROUP BY location
 ORDER BY 2 DESC;
 
----Lets breakdown by continent
 
----showing continents with highest death count per population
+
+
+-- BREAKING THINGS DOWN BY CONTINENT
+
+-- Showing contintents with the highest death count per population
 
 SELECT location, MAX (total_deaths) AS TotalDeathCount
 FROM `covid-423717.CovidData.CovidDeaths` 
@@ -58,7 +76,9 @@ WHERE continent is  null
 GROUP BY location
 ORDER BY 2 DESC;
 
---Global numbers
+
+
+-- GLOBAL NUMBERS
 
 
 SELECT SUM(new_cases) AS total_cases, Sum(new_deaths)AS total_death , (sum(new_deaths)/sum(new_cases))*100 AS DeathPercentage
@@ -69,10 +89,8 @@ ORDER BY 1,2;
 
 
 
---------------------- Look at vaccinations table now
-
----Look at total population vs vaccincation (by joing 2 tables)
-
+-- Total Population vs Vaccinations
+-- Shows Percentage of Population that has recieved at least one Covid Vaccine
 
 
 SELECT 
@@ -98,9 +116,7 @@ ORDER BY
 
 
 
-
--- Total Population vs Vaccinations
--- Shows Percentage of Population that has recieved at least one Covid Vaccine
+-- Shows Percentage of Population that has recieved at least one Covid Vaccine, order by location by date
 
 Select dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations
 , SUM(CAST(vac.new_vaccinations AS INT64)) OVER (Partition by dea.Location Order by dea.location, dea.Date) as RollingPeopleVaccinated
@@ -145,7 +161,9 @@ FROM
     PopvsVac;
 
 
---TEMP TABLE
+
+
+-- Using Temp Table to perform Calculation on Partition By in previous query
 
 -- Create the temporary table
 CREATE TEMP TABLE PercentPopulationVaccinated (
@@ -185,7 +203,9 @@ FROM
     PercentPopulationVaccinated;
 
 
----Create View to stor data for later visulaizations
+
+
+---Create View to store data for later visualizations
 
 
 Create View covid-423717.CovidData.PercentPopulationVaccinated as
@@ -199,3 +219,8 @@ JOIN
 	On dea.location = vac.location
 	and dea.date = vac.date
 where dea.continent is not null 
+
+
+
+
+
