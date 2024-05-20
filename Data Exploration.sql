@@ -16,7 +16,7 @@ ORDER BY 3,4;
 SELECT *
 FROM `covid-423717.CovidData.CovidVaccinations` 
 ORDER BY 3,4
-LIMIT 5
+LIMIT 5;
 
 
 
