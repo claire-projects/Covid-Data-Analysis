@@ -1,6 +1,6 @@
 /*
 
-Queries used for buildint the Tableau dashboard
+This script includes the queries used (in Google BigQuery) to retrive the relevant tables for building Tableau dashboard
 
 */
 
